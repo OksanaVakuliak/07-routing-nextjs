@@ -19,10 +19,12 @@ const instance = axios.create({
 async function fetchNotes(
   page: number,
   perPage: number,
-  search?: string
+  search?: string,
+  tag?: string
 ): Promise<FetchNotesResponse> {
   const params: Record<string, string | number> = { page, perPage };
   if (search) params.search = search;
+  if (tag) params.tag = tag;
 
   const { data } = await instance.get<FetchNotesResponse>('', { params });
   return data;
