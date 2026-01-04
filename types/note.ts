@@ -17,6 +17,6 @@ export interface CreateNote {
 
 export interface NotesLayoutSlots {
   children: React.ReactNode;
-  sidebar: React.ReactNode;
-  modal: React.ReactNode;
+  sidebar?: React.ReactNode;
+  modal?: React.ReactNode;
 }
