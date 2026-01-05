@@ -45,7 +45,10 @@ export default function NotesFilterClient({ tag }: NotesFilterClientProps) {
   }, [hasNextPage, fetchNextPage]);
 
   if (status === 'pending') return <p>Loading...</p>;
-  if (status === 'error') return notFound();
+  if (status === 'error') {
+    throw new Error('Failed to load notes');
+  }
+  if (!data) return notFound();
 
   const allNotes = data.pages.flatMap(page => page.notes);
 
