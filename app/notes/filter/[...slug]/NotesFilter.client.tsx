@@ -5,9 +5,11 @@ import { useEffect, useRef } from 'react';
 import noteService from '@/lib/api';
 import type { FetchNotesResponse } from '@/lib/api';
 import NoteList from '@/components/NoteList/NoteList';
+import { NoteTag } from '@/types/note';
+import { notFound } from 'next/navigation';
 
 interface NotesFilterClientProps {
-  tag?: string;
+  tag?: NoteTag | string;
 }
 
 export default function NotesFilterClient({ tag }: NotesFilterClientProps) {
@@ -15,7 +17,7 @@ export default function NotesFilterClient({ tag }: NotesFilterClientProps) {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FetchNotesResponse>({
-      queryKey: ['notes', tag],
+      queryKey: ['notes', tag ?? 'all'],
       initialPageParam: 1,
       queryFn: ({ pageParam }) =>
         noteService.fetchNotes(pageParam as number, perPage, undefined, tag),
@@ -43,7 +45,7 @@ export default function NotesFilterClient({ tag }: NotesFilterClientProps) {
   }, [hasNextPage, fetchNextPage]);
 
   if (status === 'pending') return <p>Loading...</p>;
-  if (status === 'error') return <p>Error loading notes</p>;
+  if (status === 'error') return notFound();
 
   const allNotes = data.pages.flatMap(page => page.notes);
 

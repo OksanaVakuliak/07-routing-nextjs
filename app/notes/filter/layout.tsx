@@ -1,4 +1,5 @@
 import type { NotesLayoutSlots } from '@/types/note';
+import css from '../LayoutNotes.module.css';
 
 export default function FilterLayout({
   children,
@@ -6,10 +7,12 @@ export default function FilterLayout({
   modal,
 }: NotesLayoutSlots) {
   return (
-    <>
-      {sidebar}
-      {children}
-      {modal}
-    </>
+    <div className={css.container}>
+      <aside className={css.sidebar}>{sidebar}</aside>
+      <div className={css.notesWrapper}>
+        {children}
+        {modal}
+      </div>
+    </div>
   );
 }

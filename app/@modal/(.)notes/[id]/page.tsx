@@ -1,4 +1,4 @@
-import NotePreview from './NotePreview.client';
+import NotePreview from '@/app/notes/NotePreview.client';
 
 interface ModalPageProps {
   params: Promise<{ id: string }>;

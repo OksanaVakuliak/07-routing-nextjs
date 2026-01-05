@@ -19,6 +19,11 @@ const Header = () => {
               Notes
             </Link>
           </li>
+          <li className={css.navigationItem}>
+            <Link className={css.navigationLink} href="/notes/filter/all">
+              Filter
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>
