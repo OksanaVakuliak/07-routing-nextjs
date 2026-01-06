@@ -4,7 +4,7 @@ interface FilterErrorProps {
   error: Error;
 }
 
-export default function FilterError({ error }: FilterErrorProps) {
+export default function Error({ error }: FilterErrorProps) {
   return (
     <div>
       <h2>Something went wrong</h2>

@@ -1,14 +1,29 @@
-import NotesFilterClient from './Notes.client';
+import {
+  QueryClient,
+  dehydrate,
+  HydrationBoundary,
+} from '@tanstack/react-query';
+import noteService, { FetchNotesResponse } from '@/lib/api';
+import NotesClient from './Notes.client';
 
-interface FilterPageProps {
+interface NotePageProps {
   params: Promise<{ slug: string[] }>;
 }
 
-export default async function FilterPage({ params }: FilterPageProps) {
-  const resolvedParams = await params;
+export default async function NotesPage({ params }: NotePageProps) {
+  const { slug } = await params;
+  const tag = slug?.length && slug[0] !== 'all' ? slug[0] : undefined;
 
-  const selectedTag =
-    resolvedParams.slug?.[0] === 'all' ? undefined : resolvedParams.slug?.[0];
+  const queryClient = new QueryClient();
 
-  return <NotesFilterClient tag={selectedTag} />;
+  await queryClient.prefetchQuery<FetchNotesResponse>({
+    queryKey: ['notes', 1, '', tag],
+    queryFn: () => noteService.fetchNotes(1, 12, '', tag),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <NotesClient tag={tag} />
+    </HydrationBoundary>
+  );
 }
